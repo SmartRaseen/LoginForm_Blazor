@@ -1,0 +1,135 @@
+﻿@page "/"
+@layout LoginLayout
+@inherits LoginBase
+
+@if (ShowLoader)
+{
+    <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div>
+    </div></div>
+}
+else
+{
+    <div class="container register">
+        <div class="row">
+            <div class="col-md-3 register-left">
+                <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt="Img not found" />
+                <h3>Welcome</h3>
+                <p>Start your day fresh with RSN Software</p>
+            </div>
+            <div class="col-md-9 register-right">
+                <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link @(IsLoginForm ? "active" : "") login-btn" id="login-tab" data-toggle="tab" href="#login" role="tab" ariacontrols="login" aria-selected="true" @onclick="(() => SelectForm(true))">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link login-btn @(IsLoginForm ? "" : "active")" id="newuser-tab" data-toggle="tab" href="#newuser" role="tab" ariacontrols="newuser" aria-selected="false" @onclick="(() => SelectForm(false))">New User</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    @if (IsLoginForm)
+                    {
+                        <div class="tab-pane fade show active" style="padding:80px 275px;" id="login" role="tabpanel" aria-labelledby="login-tab">
+                            <h3 class="register-heading">Login</h3>
+                            <div class="row register-form">
+                                <div class="col-md-12 profile_card">
+                                    <form class="form-inline">
+                                        <EditForm Model="@User" OnValidSubmit="@HandleValidSubmit">
+                                            <div class="form-group pb-3">
+                                                <i class="fa fa-envelope-o"></i>
+                                                <input type="text" class="formcontrol" placeholder="Username"                       @bind="User.Username">
+                                            </div>
+                                            <div class="col-sm-10">
+                                                <small class="text-danger">
+                                                    <ValidationMessage For="@(() => User.Username)" />
+                                                </small>
+                                            </div>
+                                            <div class="form-group">
+                                                <i class="fa fa-lock"></i>
+                                                <input type="password" lass="formcontrol" placeholder="Password"                    @bind="User.Password">
+                                            </div>
+                                            <div class="col-sm-10">
+                                                <small class="text-danger">
+                                                    <ValidationMessage For="@(() => User.Password)" />
+                                                </small>
+                                            </div>
+                                            <DataAnnotationsValidator />
+                                            @if (ShowError)
+                                            {
+                                                <div class="col-md-16">
+                                                    <small class="text-danger">
+                                                        Invalid Username or Password.
+                                                    </small>
+                                                </div>
+                                            }
+                                            <div class="float-left pt-3">
+                                                <input type="submit" class="btn btn-primary" value="Log In" />
+                                            </div>
+                                        </EditForm>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="tab-pane fade show" id="newuser" role="tabpanel" aria-labelledby="newuser-tab" style="opacity:1;">
+                            <h3 class="register-heading">New User</h3>
+                            <div class="row register-form">
+                                <EditForm Model="@Register" OnValidSubmit="@AddNewUser">
+                                    <div class="col-md-16">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="Username *"                    @bind="Register.Username" required />
+                                        </div>
+                                        <div class="col-sm-10">
+                                            <small class="text-danger">
+                                                <ValidationMessage For="@(() => Register.Username)" />
+                                            </small>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="email" class="form-control" placeholder="Email *"                      @bind="Register.Email" required />
+                                        </div>
+                                        <div class="col-sm-10">
+                                            <small class="text-danger">
+                                                <ValidationMessage For="@(() => Register.Email)" />
+                                            </small>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="password" class="form-control" placeholder="Password *"                @bind="Register.Password" required />
+                                        </div>
+                                        <div class="col-sm-10">
+                                            <small class="text-danger">
+                                                <ValidationMessage For="@(() => Register.Password)" />
+                                            </small>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" maxlength="10" minlength="10" class="form-control"                placeholder="Phone *" @bind="Register.Phone" required />
+                                        </div>
+                                        <div class="col-sm-10">
+                                            <small class="text-danger">
+                                                <ValidationMessage For="@(() => Register.Phone)" />
+                                            </small>
+                                        </div>
+                                    </div>
+                                    <DataAnnotationsValidator />
+                                    @if (ShowRegistrationError)
+                                    {
+                                        <div class="col-md-16">
+                                            <small class="text-danger">
+                                                Username or EmailId already exist.
+                                            </small>
+                                        </div>
+                                    }
+                                    <div class="col-md-16">
+                                        <div class="float-left">
+                                            <input type="submit" class="btn btn-primary" value="Register" />
+                                        </div>
+                                    </div>
+                                </EditForm>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}

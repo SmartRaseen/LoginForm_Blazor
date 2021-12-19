@@ -1,0 +1,16 @@
+﻿@page "/home"
+@inherits HomeBase
+
+@if (ShowLoader)
+{
+    <div class="lds-roller">
+        <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div>
+        </div>
+    </div>
+}
+else
+{
+
+}
+<h3>Hello @SessionState.Username</h3>
+
